@@ -28,8 +28,7 @@ class APIMsgHandler extends EventEmitter {
       }
     }
     if (authedClientSet.has(socket)) {
-      super.emit.apply(this, [eventName, socket, args]);
-      return true;
+      return super.emit.apply(this, [eventName, socket, args]);
     }
     return false;
   }

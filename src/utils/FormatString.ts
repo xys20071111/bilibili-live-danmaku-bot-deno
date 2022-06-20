@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// deno-lint-ignore no-explicit-any
 export function FormatString(str: string, args: any): string {
 	let result: string = str;
 	for(const arg in args) {

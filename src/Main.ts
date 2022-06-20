@@ -1,6 +1,6 @@
-import config from './config.ts';
+import config from './Config.ts';
 import { DanmakuReceiver } from './DanmakuReceiver.ts';
-import { onGraud, onLiveEnd, onLiveStart, onSuperChat, onTotalGift, receiveDanmaku, receiveGift } from './danmakuCallbacks.ts';
+import { onGraud, onLiveEnd, onLiveStart, onSuperChat, onTotalGift, receiveDanmaku, receiveGift } from './DanmakuCallbacks.ts';
 import { printLog } from './utils/mod.ts';
 
 const danmakuReceiver = new DanmakuReceiver(config.room_id);

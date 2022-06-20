@@ -1,4 +1,4 @@
-import config from "./config.ts";
+import config from "./Config.ts";
 
 const cookie =
   `buvid3=${config.verify.buvid3}; SESSDATA=${config.verify.sessdata}; bili_jct=${config.verify.csrf};`;

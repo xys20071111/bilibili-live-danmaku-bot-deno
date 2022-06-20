@@ -1,6 +1,6 @@
 // deno-lint-ignore-file
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import config from './config.ts'
+import config from './Config.ts'
 import { sendDanmaku } from './SendDanmaku.ts'
 import { Encoding } from './Text.ts'
 import { getTimeString, FormatString } from './utils/mod.ts'

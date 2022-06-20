@@ -1,6 +1,6 @@
-import { EventEmitter, WebSocketClient, WebSocketServer } from "./deps.ts";
+import { EventEmitter, WebSocketClient, WebSocketServer } from "./Deps.ts";
 import { sendDanmaku } from './SendDanmaku.ts'
-import config from "./config.ts";
+import config from "./Config.ts";
 
 interface Message {
   cmd: string;

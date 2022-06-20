@@ -1,6 +1,6 @@
-import { brotli, EventEmitter } from "./deps.ts";
-import config from "./config.ts";
-import { printLog } from "./utils/printLog.ts";
+import { brotli, EventEmitter } from "./Deps.ts";
+import config from "./Config.ts";
+import { printLog } from "./utils/mod.ts";
 import { server as apiServer } from './APIServer.ts'
 
 enum DANMAKU_PROTOCOL {

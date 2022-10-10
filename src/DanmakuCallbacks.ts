@@ -17,11 +17,13 @@ export function receiveGift(data: any) {
     return
   }
   logFile.writeSync(Encoding.UTF8.getBytes(`${getTimeString()} ${data.uname} 投喂了${data.super_gift_num}个 ${data.giftName} 价值${data.price / 1000 * data.super_gift_num}元\n`))
-  sendDanmaku({
-    msg: FormatString(config.danmakus.gift, { name: data.uname, gift: data.giftName }) 
-  })
-  thanksColdDownSet.add(data.uname)
-  setTimeout(() => {thanksColdDownSet.delete(data.uname)}, config.cold_down_time)
+  if (config.free_gift_action || data.super_gift_num > 0) {
+    sendDanmaku({
+      msg: FormatString(config.danmakus.gift, { name: data.uname, gift: data.giftName })
+    })
+    thanksColdDownSet.add(data.uname)
+    setTimeout(() => { thanksColdDownSet.delete(data.uname) }, config.cold_down_time)
+  }
 }
 
 export function onTotalGift(data: any) {

@@ -27,6 +27,7 @@ interface ConfigStruct {
   cold_down_time: number
   advertiseing_cold_down: number
   api: api_config
+  free_gift_action: boolean
 }
 
 const decoder = new TextDecoder('utf-8')

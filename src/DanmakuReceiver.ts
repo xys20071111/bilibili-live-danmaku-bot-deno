@@ -1,4 +1,4 @@
-import { brotli, EventEmitter } from "./Deps.ts";
+import { brotli, EventEmitter, WebSocketClient } from "./Deps.ts";
 import config from "./Config.ts";
 import { printLog } from "./utils/mod.ts";
 import { server as apiServer } from './APIServer.ts'
@@ -125,7 +125,7 @@ export class DanmakuReceiver extends EventEmitter {
               const data = JSON.parse(decoder.decode(packetData));
               const cmd = data.cmd.split(":")[0];
               this.emit(cmd, data.info || data.data);
-              apiServer.clients.forEach((client) => {
+              apiServer.clients.forEach((client: WebSocketClient) => {
                 client.send(JSON.stringify({ cmd, data: data.info || data.data }))
               })
               offset += length;

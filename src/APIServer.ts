@@ -8,7 +8,7 @@ interface Message {
   data: any;
 }
 
-const server = new WebSocketServer(config.api.port);
+const server: WebSocketServer = new WebSocketServer(config.api.port);
 const authedClientSet: Set<WebSocketClient> = new Set();
 
 class APIMsgHandler extends EventEmitter {

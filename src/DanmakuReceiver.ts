@@ -98,7 +98,7 @@ export class DanmakuReceiver extends EventEmitter {
         // 心跳包，不做处理
         break;
       case DANMAKU_TYPE.AUTH_REPLY:
-        printLog("通过认证");
+        printLog('弹幕接收器' ,"通过认证");
         // 认证通过，每30秒发一次心跳包
         setInterval(() => {
           const heartbeatPayload = "陈睿你妈死了";
@@ -134,7 +134,7 @@ export class DanmakuReceiver extends EventEmitter {
         }
         break;
       default:
-        printLog("什么鬼，没见过这种包");
+        printLog('弹幕接收器', `未知的弹幕数据包种类 ${packetType}`);
     }
   }
 }

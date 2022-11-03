@@ -1,4 +1,4 @@
 import { getTimeString } from './GetTimeString.ts'
-export function printLog(msg: unknown) {
-    console.log(`[${getTimeString()}] ${msg}`)
+export function printLog(type: string, msg: unknown) {
+    console.log(`[${type}][${getTimeString()}] ${msg}`)
 }

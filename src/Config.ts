@@ -28,9 +28,12 @@ interface ConfigStruct {
   advertiseing_cold_down: number
   api: api_config
   free_gift_action: boolean
+  disable_gift_action: boolean
+  disable_super_chat_action: boolean
+  disable_graud_action: boolean
 }
 
 const decoder = new TextDecoder('utf-8')
-const config: ConfigStruct = JSON.parse(decoder.decode(Deno.readFileSync(`config/${Deno.args[0]}`)));
+const config: ConfigStruct = JSON.parse(decoder.decode(Deno.readFileSync(`config/${Deno.args[0]}`)))
 
-export default config;
+export default config

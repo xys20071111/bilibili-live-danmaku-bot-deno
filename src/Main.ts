@@ -2,18 +2,7 @@ import config from './Config.ts'
 import { DanmakuReceiver } from './DanmakuReceiver.ts'
 import { onGraud, onLiveEnd, onLiveStart, onSuperChat, onTotalGift, receiveDanmaku, receiveGift } from './DanmakuCallbacks.ts'
 import { printLog } from './utils/mod.ts'
-
-async function launchAllPlugins() {
-  const pluginsList = await Deno.readDir('./plugins')
-  for await (const plugin of pluginsList) {
-    if (plugin.name === '.gitkeep') {
-      continue
-    }
-    Deno.run({
-      cmd: [`./plugins/${plugin.name}/${plugin.name}`, `./plugins/${plugin.name}/config.json`]
-    })
-  }
-}
+import { launchAllPlugins } from './Plugins.ts'
 
 const danmakuReceiver = new DanmakuReceiver(config.room_id)
 danmakuReceiver.on('connected', () => {

@@ -19,7 +19,9 @@ if (!config.disable_super_chat_action) {
 if (!config.disable_super_chat_action) {
   danmakuReceiver.on('SUPER_CHAT_MESSAGE', onSuperChat)
 }
-
+globalThis.onunload = () => {
+  printLog('主程序', '退出')
+}
 danmakuReceiver.on('closed', () => danmakuReceiver.connect())
 danmakuReceiver.on('LIVE', onLiveStart)
 danmakuReceiver.on('PREPARING', onLiveEnd)

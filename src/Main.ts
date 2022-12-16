@@ -22,7 +22,10 @@ if (!config.disable_super_chat_action) {
 globalThis.onunload = () => {
   printLog('主程序', '退出')
 }
-danmakuReceiver.on('closed', () => danmakuReceiver.connect())
+danmakuReceiver.on('closed', () => {
+  printLog('主程序', '掉线了')
+  danmakuReceiver.connect()
+})
 danmakuReceiver.on('LIVE', onLiveStart)
 danmakuReceiver.on('PREPARING', onLiveEnd)
 danmakuReceiver.on('DANMU_MSG', receiveDanmaku)

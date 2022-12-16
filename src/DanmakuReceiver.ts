@@ -32,19 +32,21 @@ export class DanmakuReceiver extends EventEmitter {
   }
   public async connect() {
     const roomConfig = await (await fetch(
-      `https://api.live.bilibili.com/room/v1/Danmu/getConf?room_id=${this.roomId}&platform=pc&player=web`,
+      `https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo?id=${this.roomId}&type=0`,
       {
         headers: {
-          cookie,
-          "user-agent":
+          Cookie: cookie,
+          "User-Agent":
             "Mozilla/5.0 (X11 Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36",
-          host: "api.live.bilibili.com",
+          Host: "api.live.bilibili.com",
+          Origin: 'https://live.bilibili.com',
+          Referer: `https://live.bilibili.com/${this.roomId}?broadcast_type=0`
         },
       },
     )).json()
     this.ws = new WebSocket(
-      `wss://${roomConfig.data.host_server_list[0].host}:${
-        roomConfig.data.host_server_list[0].wss_port
+      `wss://${roomConfig.data.host_list[0].host}:${
+        roomConfig.data.host_list[0].wss_port
       }/sub`,
     )
     this.ws.onopen = () => {
@@ -54,6 +56,7 @@ export class DanmakuReceiver extends EventEmitter {
         platform: "web",
         uid: config.verify.uid,
         key: roomConfig.data.token,
+        type: 2
       })
       this.ws!.send(this.generatePacket(
         1,

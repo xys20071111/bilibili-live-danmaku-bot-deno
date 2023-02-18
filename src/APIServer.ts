@@ -36,17 +36,14 @@ class APIMsgHandler extends EventEmitter {
 
 const serverEventEmitter = new APIMsgHandler()
 
-serverEventEmitter.on("SEND", (_socket: WebSocketClient, data: string) => {
-    sendDanmaku({
-      msg: data,
-    })
-})
-
-serverEventEmitter.on("ROOMID", (socket: WebSocket) => {
-  socket.send(JSON.stringify({
-    cmd: "ROOMID",
-    data: config.room_id,
-  }))
+serverEventEmitter.on("SEND", (_socket: WebSocketClient, dataJson: string) => {
+  const data: {
+    msg: string
+    roomId: number
+  } = JSON.parse(dataJson)
+  sendDanmaku(data.roomId, {
+    msg: data.msg
+  })
 })
 
 server.on("connection", (client: WebSocketClient) => {

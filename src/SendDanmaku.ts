@@ -15,13 +15,13 @@ export interface DanmakuStruct {
   csrf_token?: string
 }
 
-export function sendDanmaku(danmaku: DanmakuStruct) {
+export function sendDanmaku(roomId: number, danmaku: DanmakuStruct) {
   if (danmaku.msg.length > 19) {
-    sendDanmaku({
+    sendDanmaku(roomId, {
       msg: danmaku.msg.slice(0, 15),
     })
     setTimeout(() => {
-      sendDanmaku({
+      sendDanmaku(roomId, {
         msg: danmaku.msg.slice(15, danmaku.msg.length),
       })
     }, 2000)
@@ -40,7 +40,7 @@ export function sendDanmaku(danmaku: DanmakuStruct) {
   if (!danmaku.fontsize) {
     danmaku.fontsize = 24
   }
-  danmaku.roomid = config.room_id as number
+  danmaku.roomid = roomId
   danmaku.csrf = danmaku.csrf_token = config.verify.csrf
   const data = new FormData()
   for (const k in danmaku) {

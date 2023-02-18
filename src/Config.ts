@@ -21,7 +21,7 @@ interface api_config {
 }
 
 interface ConfigStruct {
-  room_id: number
+  room_id: Array<number>
   verify: Credential
   danmakus: DanmakuTemplate
   cold_down_time: number
@@ -34,6 +34,6 @@ interface ConfigStruct {
 }
 
 const decoder = new TextDecoder('utf-8')
-const config: ConfigStruct = JSON.parse(decoder.decode(Deno.readFileSync(`config/${Deno.args[0]}`)))
+const config: ConfigStruct = JSON.parse(decoder.decode(Deno.readFileSync(Deno.args[0])))
 
 export default config

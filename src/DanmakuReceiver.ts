@@ -127,9 +127,9 @@ export class DanmakuReceiver extends EventEmitter {
               const packetData = resultRaw.slice(offset + 16, offset + length)
               const data = JSON.parse(decoder.decode(packetData))
               const cmd = data.cmd.split(":")[0]
-              this.emit(cmd, data.info || data.data)
+              this.emit(cmd, this.roomId, data.info || data.data)
               apiServer.clients.forEach((client: WebSocketClient) => {
-                client.send(JSON.stringify({ cmd, data: data.info || data.data }))
+                client.send(JSON.stringify({ cmd, room: this.roomId, data: data.info || data.data }))
               })
               offset += length
             }

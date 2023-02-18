@@ -4,31 +4,35 @@ import { onGraud, onLiveEnd, onLiveStart, onSuperChat, onTotalGift, receiveDanma
 import { printLog } from './utils/mod.ts'
 import { launchAllPlugins } from './Plugins.ts'
 
-const danmakuReceiver = new DanmakuReceiver(config.room_id)
-danmakuReceiver.on('connected', () => {
-  printLog('主程序', '连接成功')
-})
+const roomReceiverMap: Map<number, DanmakuReceiver> = new Map()
+for(const room of config.room_id) {
+  const danmakuReceiver = new DanmakuReceiver(room)
+  danmakuReceiver.on('connected', () => {
+    printLog('主程序', '连接成功')
+  })
 
-if (!config.disable_gift_action) {
-  danmakuReceiver.on('COMBO_SEND', onTotalGift)
-  danmakuReceiver.on('SEND_GIFT', receiveGift)
-}
-if (!config.disable_super_chat_action) {
-  danmakuReceiver.on('GUARD_BUY', onGraud)
-}
-if (!config.disable_super_chat_action) {
-  danmakuReceiver.on('SUPER_CHAT_MESSAGE', onSuperChat)
-}
-globalThis.onunload = () => {
-  printLog('主程序', '退出')
-}
-danmakuReceiver.on('closed', () => {
-  printLog('主程序', '掉线了')
+  if (!config.disable_gift_action) {
+    danmakuReceiver.on('COMBO_SEND', onTotalGift)
+    danmakuReceiver.on('SEND_GIFT', receiveGift)
+  }
+  if (!config.disable_super_chat_action) {
+    danmakuReceiver.on('GUARD_BUY', onGraud)
+  }
+  if (!config.disable_super_chat_action) {
+    danmakuReceiver.on('SUPER_CHAT_MESSAGE', onSuperChat)
+  }
+  globalThis.onunload = () => {
+    printLog('主程序', '退出')
+  }
+  danmakuReceiver.on('closed', () => {
+    printLog('主程序', '掉线了')
+    danmakuReceiver.connect()
+  })
+  danmakuReceiver.on('LIVE', onLiveStart)
+  danmakuReceiver.on('PREPARING', onLiveEnd)
+  danmakuReceiver.on('DANMU_MSG', receiveDanmaku)
   danmakuReceiver.connect()
-})
-danmakuReceiver.on('LIVE', onLiveStart)
-danmakuReceiver.on('PREPARING', onLiveEnd)
-danmakuReceiver.on('DANMU_MSG', receiveDanmaku)
+  roomReceiverMap.set(room, danmakuReceiver)
+}
 
 launchAllPlugins()
-danmakuReceiver.connect()

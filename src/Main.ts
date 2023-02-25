@@ -28,8 +28,10 @@ for(const room of config.room_id) {
     printLog('主程序', '掉线了')
     danmakuReceiver.connect()
   })
-  danmakuReceiver.on('LIVE', onLiveStart)
-  danmakuReceiver.on('PREPARING', onLiveEnd)
+  if(!config.disable_greeting) {
+    danmakuReceiver.on('LIVE', onLiveStart)
+    danmakuReceiver.on('PREPARING', onLiveEnd)
+  }
   danmakuReceiver.on('DANMU_MSG', receiveDanmaku)
   danmakuReceiver.connect()
   roomReceiverMap.set(room, danmakuReceiver)

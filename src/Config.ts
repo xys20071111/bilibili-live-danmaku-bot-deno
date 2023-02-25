@@ -31,6 +31,7 @@ interface ConfigStruct {
   disable_gift_action: boolean
   disable_super_chat_action: boolean
   disable_graud_action: boolean
+  disable_greeting: boolean
 }
 
 const decoder = new TextDecoder('utf-8')

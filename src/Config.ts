@@ -27,11 +27,11 @@ interface ConfigStruct {
   cold_down_time: number
   advertiseing_cold_down: number
   api: api_config
-  free_gift_action: boolean
-  disable_gift_action: boolean
-  disable_super_chat_action: boolean
-  disable_graud_action: boolean
-  disable_greeting: boolean
+  free_gift_action?: boolean
+  disable_gift_action?: boolean
+  disable_super_chat_action?: boolean
+  disable_graud_action?: boolean
+  disable_greeting?: boolean
 }
 
 const decoder = new TextDecoder('utf-8')

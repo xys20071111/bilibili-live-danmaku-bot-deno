@@ -34,6 +34,7 @@ export function onTotalGift(roomId: number, data: any) {
 }
 
 export function receiveDanmaku(roomId:number, data: any) {
+  console.log(JSON.stringify(data))
   logFile.writeSync(Encoding.UTF8.getBytes(`${getTimeString()} ${roomId} ${data[2][1]}:${data[2][0]}  ${data[1]}\n`))
 }
 
@@ -46,7 +47,8 @@ export function onLiveStart(roomId: number) {
   logFile.close()
   sendDanmaku(roomId, { msg: config.danmakus.live_start })
   logFile = Deno.openSync(`./log/${getTimeString()}-${config.room_id}.log`, {
-    create: true
+    create: true,
+    write: true
   })
   logFile.writeSync(Encoding.UTF8.getBytes(`${getTimeString()} 直播开始\n`))
 }

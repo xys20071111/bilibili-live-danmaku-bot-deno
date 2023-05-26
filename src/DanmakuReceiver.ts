@@ -44,10 +44,7 @@ export class DanmakuReceiver extends EventEmitter {
         },
       },
     )).json()
-    this.ws = new WebSocket(
-      `wss://${roomConfig.data.host_list[0].host}:${roomConfig.data.host_list[0].wss_port
-      }/sub`,
-    )
+    this.ws = new WebSocket(`wss://${roomConfig.data.host_list[0].host}:${roomConfig.data.host_list[0].wss_port}/sub`)
     this.ws.onopen = () => {
       const payload = JSON.stringify({
         roomid: this.roomId,

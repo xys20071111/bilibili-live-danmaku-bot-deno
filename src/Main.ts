@@ -8,7 +8,7 @@ const roomReceiverMap: Map<number, DanmakuReceiver> = new Map()
 for(const room of config.room_id) {
   const danmakuReceiver = new DanmakuReceiver(room)
   danmakuReceiver.on('connected', () => {
-    printLog('主程序', '连接成功')
+    printLog('主程序', `[${room}]连接成功`)
   })
 
   if (!config.disable_gift_action) {

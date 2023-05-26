@@ -1,6 +1,6 @@
 import { printErr } from "./utils/PrintLog.ts"
 
-const pluginSet: Set<Deno.Process> = new Set()
+const plugins: Map<Deno.Command, Deno.ChildProcess> = new Map()
 
 export async function launchAllPlugins() {
     const pluginsList = await Deno.readDir('./plugins')
@@ -9,10 +9,9 @@ export async function launchAllPlugins() {
             continue
         }
         try {
-            const pluginProcess = Deno.run({
-                cmd: [`./plugins/${plugin.name}/main`, `./plugins/${plugin.name}/config.json`]
-            })
-            pluginSet.add(pluginProcess)
+            const pluginCommand = new Deno.Command(`./plugins/${plugin.name}/main`,{args:[`./plugins/${plugin.name}/config.json`]})
+            const pluginProcess = pluginCommand.spawn()
+            plugins.set(pluginCommand, pluginProcess)
         } catch {
             printErr('主程序', `启动插件${plugin.name}失败`)
         } 
@@ -20,7 +19,7 @@ export async function launchAllPlugins() {
 }
 
 function stopAllPlugins() {
-    for (const pluginProcess of pluginSet) {
+    for (const pluginProcess of plugins.values()) {
         pluginProcess.kill()
     }
     Deno.exit()

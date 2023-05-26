@@ -1,5 +1,5 @@
 import { brotli, EventEmitter, WebSocketClient } from "./Deps.ts"
-import config from "./Config.ts"
+import { Credential } from "./Config.ts"
 import { printLog } from "./utils/mod.ts"
 import { server as apiServer } from './APIServer.ts'
 
@@ -18,24 +18,24 @@ enum DANMAKU_TYPE {
   AUTH_REPLY = 8,
 }
 
-const cookie =
-  `buvid3=${config.verify.buvid3}SESSDATA=${config.verify.sessdata}bili_jct=${config.verify.csrf}`
 const encoder = new TextEncoder()
 const decoder = new TextDecoder("utf-8")
 
 export class DanmakuReceiver extends EventEmitter {
   private roomId: number
   private ws: WebSocket | null = null
-  constructor(roomId: number) {
+  private credential: Credential
+  constructor(roomId: number, credential: Credential) {
     super()
     this.roomId = roomId
+    this.credential = credential
   }
   public async connect() {
     const roomConfig = await (await fetch(
       `https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo?id=${this.roomId}&type=0`,
       {
         headers: {
-          Cookie: cookie,
+          Cookie: `buvid3=${this.credential.buvid3}SESSDATA=${this.credential.sessdata}bili_jct=${this.credential.csrf}`,
           "User-Agent":
             "Mozilla/5.0 (X11 Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36",
           Host: "api.live.bilibili.com",
@@ -45,8 +45,7 @@ export class DanmakuReceiver extends EventEmitter {
       },
     )).json()
     this.ws = new WebSocket(
-      `wss://${roomConfig.data.host_list[0].host}:${
-        roomConfig.data.host_list[0].wss_port
+      `wss://${roomConfig.data.host_list[0].host}:${roomConfig.data.host_list[0].wss_port
       }/sub`,
     )
     this.ws.onopen = () => {
@@ -54,15 +53,11 @@ export class DanmakuReceiver extends EventEmitter {
         roomid: this.roomId,
         protover: 3,
         platform: "web",
-        uid: config.verify.uid,
+        uid: this.credential.uid,
         key: roomConfig.data.token,
         type: 2
       })
-      this.ws!.send(this.generatePacket(
-        1,
-        7,
-        payload,
-      ))
+      this.ws!.send(this.generatePacket(1, 7, payload,))
       this.ws!.onmessage = this.danmakuProcesser.bind(this)
     }
     this.ws.onclose = () => {
@@ -101,7 +96,7 @@ export class DanmakuReceiver extends EventEmitter {
         // 心跳包，不做处理
         break
       case DANMAKU_TYPE.AUTH_REPLY:
-        printLog('弹幕接收器' ,"通过认证")
+        printLog('弹幕接收器', "通过认证")
         // 认证通过，每30秒发一次心跳包
         setInterval(() => {
           const heartbeatPayload = "陈睿你妈死了"

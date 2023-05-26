@@ -8,30 +8,35 @@ interface DanmakuTemplate {
   advertisement: string
 }
 
-interface Credential {
+export interface Credential {
   sessdata: string
   csrf: string
   buvid3: string
   uid: number
 }
 
-interface api_config {
+interface APIConfig {
   token: string
   port: number
 }
 
-interface ConfigStruct {
-  room_id: Array<number>
-  verify: Credential
+export interface RoomConfig {
+  room_id: number
+  verify?: Credential
   danmakus: DanmakuTemplate
   cold_down_time: number
   advertiseing_cold_down: number
-  api: api_config
   free_gift_action?: boolean
   disable_gift_action?: boolean
   disable_super_chat_action?: boolean
   disable_graud_action?: boolean
   disable_greeting?: boolean
+}
+
+export interface ConfigStruct {
+  verify: Credential
+  rooms: Array<RoomConfig>
+  api: APIConfig
 }
 
 const decoder = new TextDecoder('utf-8')

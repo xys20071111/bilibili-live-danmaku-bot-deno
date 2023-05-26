@@ -41,9 +41,13 @@ serverEventEmitter.on("SEND", (_socket: WebSocketClient, dataJson: string) => {
     msg: string
     roomId: number
   } = JSON.parse(dataJson)
-  sendDanmaku(data.roomId, {
-    msg: data.msg
-  })
+  for (const room of config.rooms) {
+    if (room.room_id === data.roomId) {
+      sendDanmaku(data.roomId, {
+        msg: data.msg
+      }, room.verify || config.verify)
+    }
+  }
 })
 
 server.on("connection", (client: WebSocketClient) => {

@@ -1,7 +1,4 @@
-import config from "./Config.ts"
-
-const cookie =
-  `buvid3=${config.verify.buvid3}; SESSDATA=${config.verify.sessdata}; bili_jct=${config.verify.csrf}`
+import { Credential } from "./Config.ts"
 
 export interface DanmakuStruct {
   color?: number
@@ -15,15 +12,15 @@ export interface DanmakuStruct {
   csrf_token?: string
 }
 
-export function sendDanmaku(roomId: number, danmaku: DanmakuStruct) {
+export function sendDanmaku(roomId: number, danmaku: DanmakuStruct, cerdential: Credential) {
   if (danmaku.msg.length > 19) {
     sendDanmaku(roomId, {
       msg: danmaku.msg.slice(0, 15),
-    })
+    }, cerdential)
     setTimeout(() => {
       sendDanmaku(roomId, {
         msg: danmaku.msg.slice(15, danmaku.msg.length),
-      })
+      }, cerdential)
     }, 2000)
     return
   }
@@ -41,7 +38,7 @@ export function sendDanmaku(roomId: number, danmaku: DanmakuStruct) {
     danmaku.fontsize = 24
   }
   danmaku.roomid = roomId
-  danmaku.csrf = danmaku.csrf_token = config.verify.csrf
+  danmaku.csrf = danmaku.csrf_token = cerdential.csrf
   const data = new FormData()
   for (const k in danmaku) {
     data.append(k, danmaku[k as keyof DanmakuStruct]!.toString())
@@ -50,7 +47,7 @@ export function sendDanmaku(roomId: number, danmaku: DanmakuStruct) {
     method: 'POST',
     body: data,
     headers: {
-      cookie: cookie,
+      cookie: `buvid3=${cerdential.buvid3}; SESSDATA=${cerdential.sessdata}; bili_jct=${cerdential.csrf}`,
       "user-agent":
         "Mozilla/5.0 (X11 Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36",
       host: "api.live.bilibili.com",

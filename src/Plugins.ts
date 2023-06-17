@@ -9,12 +9,14 @@ export async function launchAllPlugins() {
             continue
         }
         try {
-            const pluginCommand = new Deno.Command(`./plugins/${plugin.name}/main`,{args:[`./plugins/${plugin.name}/config.json`]})
+            const pluginCommand = new Deno.Command(`./plugins/${plugin.name}/main`, {
+                args: [`./plugins/${plugin.name}/config.json`]
+            })
             const pluginProcess = pluginCommand.spawn()
             plugins.set(pluginCommand, pluginProcess)
         } catch {
             printErr('主程序', `启动插件${plugin.name}失败`)
-        } 
+        }
     }
 }
 

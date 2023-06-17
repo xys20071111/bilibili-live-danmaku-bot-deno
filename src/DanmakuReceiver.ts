@@ -35,7 +35,7 @@ export class DanmakuReceiver extends EventEmitter {
       `https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo?id=${this.roomId}&type=0`,
       {
         headers: {
-          Cookie: `buvid3=${this.credential.buvid3}SESSDATA=${this.credential.sessdata}bili_jct=${this.credential.csrf}`,
+          Cookie: `buvid3=${this.credential.buvid3};SESSDATA=${this.credential.sessdata};bili_jct=${this.credential.csrf};`,
           "User-Agent":
             "Mozilla/5.0 (X11 Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36",
           Host: "api.live.bilibili.com",

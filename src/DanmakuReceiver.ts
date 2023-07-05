@@ -51,6 +51,7 @@ export class DanmakuReceiver extends EventEmitter {
         protover: 3,
         platform: "web",
         uid: this.credential.uid,
+        buvid: this.credential.buvid3,
         key: roomConfig.data.token,
         type: 2
       })

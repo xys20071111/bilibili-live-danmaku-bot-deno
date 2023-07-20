@@ -98,7 +98,7 @@ export class DanmakuReceiver extends EventEmitter {
         // 认证通过，每30秒发一次心跳包
         setInterval(() => {
           const heartbeatPayload = "陈睿你妈死了"
-          if (this.ws) {
+          if (this.ws && this.ws.readyState == WebSocket.OPEN) {
             this.ws.send(this.generatePacket(1, 2, heartbeatPayload))
           }
         }, 30000)

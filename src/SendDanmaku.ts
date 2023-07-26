@@ -26,7 +26,7 @@ export function sendDanmaku(roomId: number, danmaku: DanmakuStruct, cerdential: 
   }
   danmaku.rnd = new Date().getTime()
   if (!danmaku.color) {
-    danmaku.color = 5816798
+    danmaku.color = 16777215
   }
   if (!danmaku.bubble) {
     danmaku.bubble = 0
@@ -53,5 +53,7 @@ export function sendDanmaku(roomId: number, danmaku: DanmakuStruct, cerdential: 
       host: "api.live.bilibili.com",
       "Referer": "https://live.bilibili.com",
     }
-  })
+  }).then(response => {
+    return response.json()
+  }).then((data) => {console.log(data)})
 }

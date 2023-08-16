@@ -5,7 +5,13 @@ import { printLog } from './utils/mod.ts'
 import { launchAllPlugins } from './Plugins.ts'
 
 const roomReceiverMap: Map<number, DanmakuReceiver> = new Map()
+
+await launchAllPlugins()
+
 for(const room of config.rooms) {
+  if (room.room_id === 0) {
+    continue
+  }
   const danmakuReceiver = new DanmakuReceiver(room.room_id, room.verify || config.verify)
   danmakuReceiver.on('connected', () => {
     printLog('主程序', `[${room.room_id}]连接成功`)
@@ -24,17 +30,15 @@ for(const room of config.rooms) {
   globalThis.onunload = () => {
     printLog('主程序', '退出')
   }
-  danmakuReceiver.on('closed', () => {
-    printLog('主程序', '掉线了')
-    danmakuReceiver.connect()
+  danmakuReceiver.on('closed', (reason: string) => {
+    printLog('主程序', `[${room.room_id}]掉线了 ${reason}`)
+    danmakuReceiver.connect().then()
   })
   if(!room.disable_greeting) {
     danmakuReceiver.on('LIVE', onLiveStart)
     danmakuReceiver.on('PREPARING', onLiveEnd)
   }
   danmakuReceiver.on('DANMU_MSG', receiveDanmaku)
-  danmakuReceiver.connect()
+  await danmakuReceiver.connect()
   roomReceiverMap.set(room.room_id, danmakuReceiver)
 }
-
-launchAllPlugins()

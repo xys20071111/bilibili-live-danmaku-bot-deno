@@ -23,9 +23,9 @@ interface APIConfig {
 export interface RoomConfig {
   room_id: number
   verify?: Credential
-  danmakus: DanmakuTemplate
-  cold_down_time: number
-  advertiseing_cold_down: number
+  danmakus?: DanmakuTemplate
+  cold_down_time?: number
+  advertiseing_cold_down?: number
   free_gift_action?: boolean
   disable_gift_action?: boolean
   disable_super_chat_action?: boolean
@@ -35,8 +35,18 @@ export interface RoomConfig {
 
 export interface ConfigStruct {
   verify: Credential
-  rooms: Array<RoomConfig>
+  rooms: Array<RoomConfig | number>
   api: APIConfig
+  defaultConfig: {
+    danmakus: DanmakuTemplate
+    cold_down_time: number
+    advertiseing_cold_down: number
+    free_gift_action: boolean
+    disable_gift_action: boolean
+    disable_super_chat_action: boolean
+    disable_graud_action: boolean
+    disable_greeting: boolean
+  }
 }
 
 const decoder = new TextDecoder('utf-8')

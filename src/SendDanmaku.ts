@@ -10,6 +10,7 @@ export interface DanmakuStruct {
   roomid?: number
   csrf?: string
   csrf_token?: string
+  reply_mid?: number
 }
 
 export function sendDanmaku(roomId: number, danmaku: DanmakuStruct, cerdential: Credential) {
